@@ -5,11 +5,11 @@ ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0,web,db
 
 # База данных PostgreSQL
 DATABASE_URL=postgresql://postgres:postgres123@db:5432/electronics_network
-POSTGRES_DB=electronics_network
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres123
-POSTGRES_HOST=db
-POSTGRES_PORT=5432
+DATABASE_NAME=electronics_network
+DATABASE_USER=postgres
+DATABASE_PASSWORD=postgres123
+DATABASE_HOST=db
+DATABASE_PORT=5432
 
 # Redis для кэширования
 REDIS_URL=redis://redis:6379/0
