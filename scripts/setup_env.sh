@@ -8,5 +8,5 @@ if [ ! -f .env ]; then
     echo "✅ Файл .env создан из env.example"
     echo "📝 Не забудьте изменить SECRET_KEY для продакшена!"
 else
-    echo "❗️  Файл .env уже существует"
+    echo "⚠️  Файл .env уже существует"
 fi

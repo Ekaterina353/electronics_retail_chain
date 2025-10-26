@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-"""
-Скрипт для запуска тестов веб-приложения сети электроники
-"""
-
 import os
 import sys
 import django

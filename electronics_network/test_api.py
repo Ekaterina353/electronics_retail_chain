@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework.test import APITestCase, APIClient
@@ -10,7 +9,7 @@ from .models import NetworkNode, Product, Employee
 
 class NetworkNodeAPITest(APITestCase):
     """Тесты для API звеньев сети"""
-    
+
     def setUp(self):
         """Настройка тестовых данных"""
         self.user = User.objects.create_user(
@@ -18,7 +17,7 @@ class NetworkNodeAPITest(APITestCase):
             email="test@example.com",
             password="testpass123"
         )
-        
+
         self.factory = NetworkNode.objects.create(
             name="Завод Электроника",
             node_type="factory",
@@ -28,23 +27,23 @@ class NetworkNodeAPITest(APITestCase):
             street="Промышленная",
             house_number="1"
         )
-        
+
         self.employee = Employee.objects.create(
             user=self.user,
             is_active_employee=True,
             network_node=self.factory
         )
-        
+
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-    
+
     def test_list_network_nodes(self):
         """Тест получения списка звеньев сети"""
         url = reverse('networknode-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
-    
+
     def test_create_network_node(self):
         """Тест создания звена сети"""
         url = reverse('networknode-list')
@@ -61,7 +60,7 @@ class NetworkNodeAPITest(APITestCase):
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(NetworkNode.objects.count(), 2)
-    
+
     def test_update_network_node(self):
         """Тест обновления звена сети"""
         url = reverse('networknode-detail', kwargs={'pk': self.factory.pk})
@@ -78,7 +77,7 @@ class NetworkNodeAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.factory.refresh_from_db()
         self.assertEqual(self.factory.name, 'Завод Электроника Обновленный')
-    
+
     def test_debt_field_read_only(self):
         """Тест что поле debt_to_supplier нельзя обновлять через API"""
         url = reverse('networknode-detail', kwargs={'pk': self.factory.pk})
@@ -97,14 +96,14 @@ class NetworkNodeAPITest(APITestCase):
         self.factory.refresh_from_db()
         # Задолженность не должна измениться
         self.assertEqual(self.factory.debt_to_supplier, Decimal('0.00'))
-    
+
     def test_filter_by_country(self):
         """Тест фильтрации по стране"""
         url = reverse('networknode-by-country')
         response = self.client.get(url, {'country': 'Россия'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
-    
+
     def test_clear_debt_action(self):
         """Тест действия очистки задолженности"""
         # Создаем звено с задолженностью
@@ -119,13 +118,13 @@ class NetworkNodeAPITest(APITestCase):
             supplier=self.factory,
             debt_to_supplier=Decimal('50000.00')
         )
-        
+
         url = reverse('networknode-clear-debt', kwargs={'pk': retail.pk})
         response = self.client.post(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         retail.refresh_from_db()
         self.assertEqual(retail.debt_to_supplier, Decimal('0.00'))
-    
+
     def test_hierarchy_endpoint(self):
         """Тест endpoint для получения иерархии"""
         url = reverse('networknode-hierarchy')
@@ -136,7 +135,7 @@ class NetworkNodeAPITest(APITestCase):
 
 class ProductAPITest(APITestCase):
     """Тесты для API продуктов"""
-    
+
     def setUp(self):
         """Настройка тестовых данных"""
         self.user = User.objects.create_user(
@@ -144,7 +143,7 @@ class ProductAPITest(APITestCase):
             email="test@example.com",
             password="testpass123"
         )
-        
+
         self.factory = NetworkNode.objects.create(
             name="Завод Электроника",
             node_type="factory",
@@ -154,30 +153,30 @@ class ProductAPITest(APITestCase):
             street="Промышленная",
             house_number="1"
         )
-        
+
         self.employee = Employee.objects.create(
             user=self.user,
             is_active_employee=True,
             network_node=self.factory
         )
-        
+
         self.product = Product.objects.create(
             name="Смартфон",
             model="Galaxy S24",
             release_date=date(2024, 1, 1),
             network_node=self.factory
         )
-        
+
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-    
+
     def test_list_products(self):
         """Тест получения списка продуктов"""
         url = reverse('product-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
-    
+
     def test_create_product(self):
         """Тест создания продукта"""
         url = reverse('product-list')

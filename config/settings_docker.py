@@ -1,23 +1,18 @@
 import os
-from pathlib import Path
-from .settings import *
+# from pathlib import Path
 
-# Переопределяем настройки для Docker окружения
 
-# Дополнительные хосты для Docker
-ALLOWED_HOSTS.extend(['web', 'db', 'nginx'])
+DEBUG = False
 
-# Переопределяем пути для Docker
-STATIC_ROOT = '/app/static'
-MEDIA_ROOT = '/app/media'
+ALLOWED_HOSTS = ['*']  # Или укажите конкретные хосты
 
-# Логирование в Docker (только в консоль)
-LOGGING['handlers'] = {
-    'console': {
-        'class': 'logging.StreamHandler',
-        'formatter': 'verbose',
-    },
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',  # Пример для PostgreSQL
+        'NAME': os.environ.get('POSTGRES_DB', 'electronic_network'),  # Имя базы данных из переменной окружения
+        'USER': os.environ.get('POSTGRES_USER', 'postgres'),  # Пользователь базы данных
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'postgres'),  # Пароль базы данных
+        'HOST': os.environ.get('POSTGRES_HOST', 'db'),  # Имя сервиса в Docker Compose
+        'PORT': os.environ.get('POSTGRES_PORT', 5432),  # Порт PostgreSQL
+    }
 }
-LOGGING['root']['handlers'] = ['console']
-LOGGING['loggers']['django']['handlers'] = ['console']
-LOGGING['loggers']['electronics_network']['handlers'] = ['console']

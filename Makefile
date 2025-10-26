@@ -73,14 +73,14 @@ setup-env:
 		cp env.example .env; \
 		echo "✅ Файл .env создан из env.example"; \
 	else \
-		echo "❗️  Файл .env уже существует"; \
+		echo "⚠️  Файл .env уже существует"; \
 	fi
 
 # Полная установка и запуск
 install: setup-env build up migrate init-data
 	@echo "✅ Приложение запущено!"
 	@echo "🌐 Админ-панель: http://localhost:8000/admin/"
-	@echo "🖇API: http://localhost:8000/api/"
+	@echo "🔗 API: http://localhost:8000/api/"
 
 # Развертывание для продакшена
 deploy: build up migrate collectstatic

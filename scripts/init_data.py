@@ -1,10 +1,10 @@
-"""
-Скрипт для инициализации тестовых данных в Docker контейнере
-"""
-
 import os
 import sys
 import django
+from django.contrib.auth.models import User
+from electronics_network.models import NetworkNode, Product, Employee
+from decimal import Decimal
+from datetime import date
 
 # Добавляем путь к проекту
 sys.path.append('/app')
@@ -12,11 +12,6 @@ sys.path.append('/app')
 # Настраиваем Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings_docker')
 django.setup()
-
-from django.contrib.auth.models import User
-from electronics_network.models import NetworkNode, Product, Employee
-from decimal import Decimal
-from datetime import date
 
 
 def create_superuser():
@@ -72,7 +67,7 @@ def create_network_hierarchy():
             'node_type': 'individual_entrepreneur',
             'email': 'ip@example.com',
             'country': 'Россия',
-            'city': 'Рязань',
+            'city': 'Казань',
             'street': 'Частная',
             'house_number': '5',
             'supplier': retail,
@@ -180,20 +175,20 @@ def create_employees(factory, retail):
 def main():
     """Основная функция"""
     print("🚀 Инициализация данных для сети электроники...")
-    
+
     try:
         # Создаем суперпользователя
         create_superuser()
-        
+
         # Создаем иерархию сети
         factory, retail, entrepreneur = create_network_hierarchy()
-        
+
         # Создаем продукты
         create_products(factory, retail)
-        
+
         # Создаем сотрудников
         create_employees(factory, retail)
-        
+
         print("\n✅ Инициализация завершена успешно!")
         print("\n📋 Доступные учетные записи:")
         print("   Админ: admin / admin123")
@@ -203,7 +198,7 @@ def main():
         print("\n🌐 Доступ к приложению:")
         print("   Админ-панель: http://localhost:8000/admin/")
         print("   API: http://localhost:8000/api/")
-        
+
     except Exception as e:
         print(f"❌ Ошибка при инициализации: {e}")
         sys.exit(1)

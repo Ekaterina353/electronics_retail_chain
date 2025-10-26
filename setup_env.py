@@ -7,14 +7,16 @@ import os
 import secrets
 import string
 
+
 def generate_secret_key():
     """Генерирует безопасный SECRET_KEY для Django"""
     chars = string.ascii_letters + string.digits + '!@#$%^&*(-_=+)'
     return ''.join(secrets.choice(chars) for _ in range(50))
 
+
 def create_env_file():
     """Создает .env файл с настройками приложения"""
-    
+
     env_content = f"""# Django настройки для сети электроники
 DEBUG=1
 SECRET_KEY={generate_secret_key()}
@@ -74,7 +76,7 @@ DEFAULT_CURRENCY=RUB
         if response.lower() != 'y':
             print("❌ Отменено")
             return False
-    
+
     # Создаем .env файл
     try:
         with open('.env', 'w', encoding='utf-8') as f:
@@ -86,10 +88,11 @@ DEFAULT_CURRENCY=RUB
         print(f"❌ Ошибка при создании .env файла: {e}")
         return False
 
+
 def main():
     """Основная функция"""
     print("🔧 Настройка .env файла для приложения сети электроники...")
-    
+
     if create_env_file():
         print("\n📋 Созданные настройки:")
         print("   • База данных: PostgreSQL (electronics_network)")
@@ -100,6 +103,7 @@ def main():
         print("\n🚀 Теперь можно запустить: make install")
     else:
         print("❌ Не удалось создать .env файл")
+
 
 if __name__ == '__main__':
     main()

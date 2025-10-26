@@ -1,14 +1,13 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.urls import reverse
-from django.utils.safestring import mark_safe
 from .models import NetworkNode, Product, Employee
 
 
 @admin.register(NetworkNode)
 class NetworkNodeAdmin(admin.ModelAdmin):
     list_display = [
-        'name', 'node_type', 'email', 'city', 'country', 
+        'name', 'node_type', 'email', 'city', 'country',
         'supplier_link', 'debt_to_supplier', 'hierarchy_level', 'created_at'
     ]
     list_filter = [
@@ -18,7 +17,7 @@ class NetworkNodeAdmin(admin.ModelAdmin):
         'name', 'email', 'city', 'country', 'street'
     ]
     readonly_fields = ['created_at', 'updated_at', 'hierarchy_level']
-    
+
     fieldsets = (
         ('Основная информация', {
             'fields': ('name', 'node_type', 'email')
@@ -34,18 +33,19 @@ class NetworkNodeAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-    
+
     actions = ['clear_debt']
-    
+
     def supplier_link(self, obj):
         """Создает ссылку на поставщика"""
         if obj.supplier:
             url = reverse('admin:electronics_network_networknode_change', args=[obj.supplier.id])
             return format_html('<a href="{}">{}</a>', url, obj.supplier.name)
         return '-'
+
     supplier_link.short_description = 'Поставщик'
     supplier_link.admin_order_field = 'supplier__name'
-    
+
     def hierarchy_level(self, obj):
         """Показывает уровень в иерархии"""
         level = obj.hierarchy_level
@@ -56,8 +56,9 @@ class NetworkNodeAdmin(admin.ModelAdmin):
         elif level == 2:
             return format_html('<span style="color: orange; font-weight: bold;">ИП (2)</span>')
         return f'Уровень {level}'
+
     hierarchy_level.short_description = 'Уровень иерархии'
-    
+
     def clear_debt(self, request, queryset):
         """Admin action для очистки задолженности"""
         updated = queryset.update(debt_to_supplier=0)
@@ -65,8 +66,9 @@ class NetworkNodeAdmin(admin.ModelAdmin):
             request,
             f'Задолженность очищена для {updated} объектов.'
         )
+
     clear_debt.short_description = 'Очистить задолженность перед поставщиком'
-    
+
     def get_queryset(self, request):
         """Оптимизирует запросы"""
         return super().get_queryset(request).select_related('supplier')
@@ -84,7 +86,7 @@ class ProductAdmin(admin.ModelAdmin):
         'name', 'model', 'network_node__name'
     ]
     readonly_fields = ['created_at']
-    
+
     fieldsets = (
         ('Информация о продукте', {
             'fields': ('name', 'model', 'release_date')
@@ -97,7 +99,7 @@ class ProductAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-    
+
     def get_queryset(self, request):
         """Оптимизирует запросы"""
         return super().get_queryset(request).select_related('network_node')
@@ -115,7 +117,7 @@ class EmployeeAdmin(admin.ModelAdmin):
         'user__username', 'user__first_name', 'user__last_name', 'user__email'
     ]
     readonly_fields = ['created_at']
-    
+
     fieldsets = (
         ('Информация о сотруднике', {
             'fields': ('user', 'is_active_employee', 'network_node')
@@ -125,7 +127,7 @@ class EmployeeAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-    
+
     def get_queryset(self, request):
         """Оптимизирует запросы"""
         return super().get_queryset(request).select_related('user', 'network_node')
