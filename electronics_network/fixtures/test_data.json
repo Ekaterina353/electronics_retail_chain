@@ -1,0 +1,137 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "admin",
+      "email": "admin@example.com",
+      "first_name": "Администратор",
+      "last_name": "Системы",
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": true,
+      "date_joined": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "username": "employee1",
+      "email": "emp1@example.com",
+      "first_name": "Иван",
+      "last_name": "Петров",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "username": "employee2",
+      "email": "emp2@example.com",
+      "first_name": "Мария",
+      "last_name": "Сидорова",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "date_joined": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "electronics_network.networknode",
+    "pk": 1,
+    "fields": {
+      "name": "Завод Электроника",
+      "node_type": "factory",
+      "email": "factory@example.com",
+      "country": "Россия",
+      "city": "Москва",
+      "street": "Промышленная",
+      "house_number": "1",
+      "supplier": null,
+      "debt_to_supplier": "0.00",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "electronics_network.networknode",
+    "pk": 2,
+    "fields": {
+      "name": "Розничная сеть Техно",
+      "node_type": "retail_network",
+      "email": "retail@example.com",
+      "country": "Россия",
+      "city": "Санкт-Петербург",
+      "street": "Торговая",
+      "house_number": "10",
+      "supplier": 1,
+      "debt_to_supplier": "50000.00",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "electronics_network.networknode",
+    "pk": 3,
+    "fields": {
+      "name": "ИП Смирнов",
+      "node_type": "individual_entrepreneur",
+      "email": "ip@example.com",
+      "country": "Россия",
+      "city": "Казань",
+      "street": "Частная",
+      "house_number": "5",
+      "supplier": 2,
+      "debt_to_supplier": "15000.00",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "electronics_network.product",
+    "pk": 1,
+    "fields": {
+      "name": "Смартфон",
+      "model": "Galaxy S24",
+      "release_date": "2024-01-01",
+      "network_node": 1,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "electronics_network.product",
+    "pk": 2,
+    "fields": {
+      "name": "Планшет",
+      "model": "iPad Pro",
+      "release_date": "2024-02-01",
+      "network_node": 2,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "electronics_network.employee",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "is_active_employee": true,
+      "network_node": 1,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "electronics_network.employee",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "is_active_employee": true,
+      "network_node": 2,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  }
+]
